@@ -1,9 +1,15 @@
 {
-    "name": "brynj-digital/laravel-table",
+    "name": "reckless/laravel-table",
     "description": "Table functionality for Laravel models",
     "keywords": ["laravel","table","html","model","sorting","filtering"],
     "license": "MIT",
     "authors": [
+        {
+            "name": "Reckless Dev",
+            "email": "dev@reckless.agency",
+            "homepage": "https://reckless.agency",
+            "role": "Developer"
+        },
         {
             "name": "Greg Brock",
             "email": "contact@gbrock.com",
@@ -13,7 +19,7 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "laravel/framework": "5.*"
+        "laravel/framework": "5.*|6.*"
     },
     "require-dev": {
         "phpunit/phpunit": "4.5.*"
