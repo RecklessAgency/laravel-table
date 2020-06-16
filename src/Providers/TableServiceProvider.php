@@ -1,6 +1,6 @@
-<?php namespace Gbrock\Table\Providers;
+<?php namespace Reckless\Table\Providers;
 
-use Gbrock\Table\Table;
+use Reckless\Table\Table;
 use Illuminate\Support\ServiceProvider;
 
 class TableServiceProvider extends ServiceProvider {
@@ -25,26 +25,26 @@ class TableServiceProvider extends ServiceProvider {
     {
         $root = __DIR__.'/../../';
         // Load views
-        $this->loadViewsFrom($root . 'resources/views', 'gbrock');
+        $this->loadViewsFrom($root . 'resources/views', 'reckless');
 
         // Publish views
         $this->publishes([
-            $root . 'resources/views' => base_path('resources/views/vendor/gbrock'),
+            $root . 'resources/views' => base_path('resources/views/vendor/reckless'),
         ]);
 
         // Publish configuration
         $this->publishes([
-            $root . 'config/tables.php' => config_path('gbrock-tables.php'),
+            $root . 'config/tables.php' => config_path('reckless-tables.php'),
         ]);
 
         // Merge user config, passing in our defaults
         $this->mergeConfigFrom(
-            $root . 'config/tables.php', 'gbrock-tables'
+            $root . 'config/tables.php', 'reckless-tables'
         );
 
         // Publish assets
 //        $this->publishes([
-//            $root . 'build/assets' => public_path('vendor/gbrock/tables'),
+//            $root . 'build/assets' => public_path('vendor/reckless/tables'),
 //        ], 'public');
     }
 }

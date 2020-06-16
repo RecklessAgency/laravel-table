@@ -1,6 +1,7 @@
-<?php namespace Gbrock\Table\Traits;
+<?php namespace Reckless\Table\Traits;
 
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Str;
 
 trait Sortable {
 
@@ -19,7 +20,7 @@ trait Sortable {
         }
 
         // The name of the custom function (which may or may not exist) which sorts this field
-        $sortFunctionName = 'sort' . studly_case($field);
+        $sortFunctionName = 'sort' . Str::studly($field);
 
         // does $field appear as a VALUE in list of known sortables?
         $isValueOfSortable = in_array($field, (array) $this->sortable);
@@ -37,7 +38,7 @@ trait Sortable {
         // If the direction requested isn't correct, grab from config
         if($direction !== 'asc' && $direction !== 'desc')
         {
-            $direction = config('gbrock-tables.default_direction');
+            $direction = config('reckless-tables.default_direction');
         }
 
         if($isCallableFunction)
@@ -78,15 +79,15 @@ trait Sortable {
      */
     public function getSortingField($field=false)
     {
-        if(Request::input(config('gbrock-tables.key_field')))
+        if(Request::input(config('reckless-tables.key_field')))
         {
             // User is requesting a specific column
-            return Request::input(config('gbrock-tables.key_field'));
+            return Request::input(config('reckless-tables.key_field'));
         }
         elseif($field !== false)
         {
             // Merge manually set sort field into request, so view column indicators work
-            Request::merge([config('gbrock-tables.key_field') => $field]);
+            Request::merge([config('reckless-tables.key_field') => $field]);
 
             // Specific field passed to sortable() method
             return $field;
@@ -106,15 +107,15 @@ trait Sortable {
      */
     protected function getSortingDirection($direction=false)
     {
-        if(Request::input(config('gbrock-tables.key_direction')))
+        if(Request::input(config('reckless-tables.key_direction')))
         {
             // User is requesting a specific column
-            return Request::input(config('gbrock-tables.key_direction'));
+            return Request::input(config('reckless-tables.key_direction'));
         }
         elseif($direction !== false)
         {
             // Merge manually set sort direction into request, so view column indicators work
-            Request::merge([config('gbrock-tables.key_direction') => $direction]);
+            Request::merge([config('reckless-tables.key_direction') => $direction]);
 
             // Specific direction passed to sortable() method
             return $direction;
@@ -122,7 +123,7 @@ trait Sortable {
         else
         {
             // Otherwise return the primary key
-            return config('gbrock-tables.default_direction');
+            return config('reckless-tables.default_direction');
         }
 
     }

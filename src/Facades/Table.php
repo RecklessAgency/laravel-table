@@ -1,4 +1,4 @@
-<?php namespace Gbrock\Table\Facades;
+<?php namespace Reckless\Table\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

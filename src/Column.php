@@ -1,4 +1,4 @@
-<?php namespace Gbrock\Table;
+<?php namespace Reckless\Table;
 
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
@@ -107,11 +107,11 @@ class Column
      */
     public function isSorted()
     {
-        if (Request::input(config('gbrock-tables.key_field')) == $this->getField()) {
+        if (Request::input(config('reckless-tables.key_field')) == $this->getField()) {
             return true;
         }
 
-        if (!Request::input(config('gbrock-tables.key_field')) && $this->model && $this->model->getSortingField() == $this->getField()) {
+        if (!Request::input(config('reckless-tables.key_field')) && $this->model && $this->model->getSortingField() == $this->getField()) {
             // No sorting was requested, but this is the default field.
             return true;
         }
@@ -136,8 +136,8 @@ class Column
 
         // Generate and return a URL which may be used to sort this column
         return $this->generateUrl(array_filter([
-            config('gbrock-tables.key_field')     => $this->getField(),
-            config('gbrock-tables.key_direction') => $direction,
+            config('reckless-tables.key_field')     => $this->getField(),
+            config('reckless-tables.key_direction') => $direction,
         ]));
     }
 
@@ -149,11 +149,11 @@ class Column
     {
         if ($this->isSorted()) {
             // If the column is currently being sorted, grab the direction from the query string
-            $this->direction = Request::input(config('gbrock-tables.key_direction'));
+            $this->direction = Request::input(config('reckless-tables.key_direction'));
         }
 
         if (!$this->direction) {
-            $this->direction = config('gbrock-tables.default_direction');
+            $this->direction = config('reckless-tables.default_direction');
         }
 
         return $this->direction;
@@ -221,12 +221,12 @@ class Column
     protected function getCurrentInput()
     {
         $current_inputs = [
-            config('gbrock-tables.key_field')     => Request::input(config('gbrock-tables.key_field')),
-            config('gbrock-tables.key_direction') => Request::input(config('gbrock-tables.key_direction')),
+            config('reckless-tables.key_field')     => Request::input(config('reckless-tables.key_field')),
+            config('reckless-tables.key_direction') => Request::input(config('reckless-tables.key_direction')),
         ];
 
-        if(count(config('gbrock-tables.allowed_parameters')) > 0) {
-            foreach(config('gbrock-tables.allowed_parameters') as $allowed_parameter) {
+        if(count(config('reckless-tables.allowed_parameters')) > 0) {
+            foreach(config('reckless-tables.allowed_parameters') as $allowed_parameter) {
                 $current_inputs[$allowed_parameter] = Request::input($allowed_parameter);
             }
         }

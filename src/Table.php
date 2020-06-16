@@ -1,13 +1,13 @@
-<?php namespace Gbrock\Table;
+<?php namespace Reckless\Table;
 
-use Illuminate\Support\Facades\Input;
-use Gbrock\Table\Column;
+use Illuminate\Support\Facades\Request;
+use Reckless\Table\Column;
 
 class Table
 {
     protected $models;
     protected $columns;
-    protected $view = 'gbrock::table';
+    protected $view = 'reckless::table';
     protected $viewVars = [];
 
     /**
@@ -226,9 +226,9 @@ class Table
     private function appendPaginationLinks()
     {
         if (class_basename($this->models) == 'LengthAwarePaginator') {
-            $allowed_parameters = array_merge([config('gbrock-tables.key_field'), config('gbrock-tables.key_direction')], config('gbrock-tables.allowed_parameters'));
+            $allowed_parameters = array_merge([config('reckless-tables.key_field'), config('reckless-tables.key_direction')], config('reckless-tables.allowed_parameters'));
             // This set of models was paginated.  Make it append our current view variables.
-            $this->models->appends(request()->only($allowed_parameters));
+            $this->models->appends(Request::only($allowed_parameters));
         }
     }
 }

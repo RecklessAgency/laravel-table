@@ -9,6 +9,12 @@
             "email": "contact@gbrock.com",
             "homepage": "http://gbrock.com",
             "role": "Developer"
+        },
+        {
+            "name": "Reckless Agency Dev",
+            "email": "dev@reckless.agency",
+            "homepage": "https://reckless.agency",
+            "role": "Developer"
         }
     ],
     "require": {
@@ -20,7 +26,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Gbrock\\Table\\": "src/"
+            "Reckless\\Table\\": "src/"
         }
     }
 }
