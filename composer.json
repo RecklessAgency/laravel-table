@@ -18,7 +18,7 @@
         }
     ],
     "require": {
-        "laravel/framework": "11.*",
+        "laravel/framework": "12.*",
         "laravel/helpers": "~1.5"
     },
     "require-dev": {
