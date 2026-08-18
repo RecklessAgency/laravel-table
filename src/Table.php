@@ -1,12 +1,13 @@
 <?php namespace Reckless\Table;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Request;
 use Reckless\Table\Column;
 
 class Table
 {
     protected $models;
-    protected $columns;
+    protected $columns = [];
     protected $view = 'reckless::table';
     protected $viewVars = [];
 
@@ -57,7 +58,7 @@ class Table
     {
         $this->view = $view;
         if (is_array($vars) || !$vars) {
-            $this->viewVars = $vars;
+            $this->viewVars = is_array($vars) ? $vars : [];
         }
     }
 
@@ -157,7 +158,7 @@ class Table
     public function getData()
     {
         return array_merge($this->viewVars, [
-            'rows'    => $this->getRows(),
+            'rows'    => $this->getRows() ?? collect(),
             'columns' => $this->getColumns(),
         ]);
     }
@@ -202,7 +203,7 @@ class Table
             }
         }
 
-        if(class_basename($models->first()) == 'stdClass')
+        if($models->first() instanceof \stdClass)
         {
             $models = $models->map(function ($array) {
                 return new BlankModel($array);
@@ -225,7 +226,7 @@ class Table
      */
     private function appendPaginationLinks()
     {
-        if (class_basename($this->models) == 'LengthAwarePaginator') {
+        if ($this->models instanceof LengthAwarePaginator) {
             $allowed_parameters = array_merge([config('reckless-tables.key_field'), config('reckless-tables.key_direction')], config('reckless-tables.allowed_parameters'));
             // This set of models was paginated.  Make it append our current view variables.
             $this->models->appends(Request::only($allowed_parameters));
