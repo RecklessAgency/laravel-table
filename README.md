@@ -1,30 +1,39 @@
 # Laravel Tables
-[![Made for Laravel 7](https://img.shields.io/badge/laravel-7.0-red.svg)](http://laravel.com/)
+[![Made for Laravel 13](https://img.shields.io/badge/laravel-13.0-red.svg)](http://laravel.com/)
+[![PHP 8.3+](https://img.shields.io/badge/php-8.3%2B-blue.svg)](https://www.php.net/)
 [![Latest Tag](https://img.shields.io/github/tag/reckless/laravel-table.svg)](https://github.com/recklessAgency/laravel-table/releases)
-<!--[![Build Status](https://img.shields.io/travis/reckless/laravel-table.svg)](https://travis-ci.org/reckless/laravel-table)-->
+[![Tests](https://github.com/RecklessAgency/laravel-table/actions/workflows/tests.yml/badge.svg)](https://github.com/RecklessAgency/laravel-table/actions/workflows/tests.yml)
 
 This package contains flexible ways of rendering Eloquent collections as dynamic HTML tables.  This includes
 techniques for sortable columns, customizable cell data, automatic pagination, ~~user-definable rows-per-page, batch
 action handling, and extensible filtering~~ (coming soon).
 
 
+## Requirements
+
+| Package | Requires |
+| --- | --- |
+| Laravel | 13.x |
+| PHP | 8.3, 8.4 or 8.5 |
+
+Earlier Laravel versions live on their own branches (`laravel-12`, `laravel-11`, and so on).
+
+The package requires `laravel/framework` rather than individual `illuminate/*` packages
+on purpose: it uses the `config()`, `view()` and `url()` helpers, which ship in
+Illuminate's Foundation component and have no standalone package.
+
 ## Installation
 
-Require the package in your `composer.json`:
+Require the package:
 
-```json
-"reckless/laravel-table": "dev-master"
+```
+composer require reckless/laravel-table:dev-laravel-13
 ```
 
-Add the service provider to `config/app.php` and, optionally, the Facade:
+The service provider and the `Table` facade are registered automatically through package
+discovery, so no `config/app.php` changes are needed.
 
-```php
-'Reckless\Table\Providers\TableServiceProvider',
-...
-'Table'      => 'Reckless\Table\Facades\Table',
-```
-
-Publish the views and config:
+Publish the views and config if you want to customise them:
 
 ```
 php artisan vendor:publish
@@ -120,7 +129,7 @@ $table->addColumn('created_at', 'Added', function($model) {
 ```
 
 Also, since the table is accessing our model's attributes, we can add or modify any column key we'd like by using
-[accessors](http://laravel.com/docs/5.0/eloquent#accessors-and-mutators):
+[accessors](https://laravel.com/docs/13.x/eloquent-mutators#accessors-and-mutators):
 
 ```php
     protected function getRenderedCreatedAtAttribute()
@@ -139,4 +148,34 @@ You can copy this file wherever you'd like and alter it, then tell your table to
 
 ```php
 $table->setView('users.table');
+```
+
+## Pagination
+
+If the collection passed in is a `LengthAwarePaginator` (i.e. the result of `paginate()`),
+the view renders its links below the table, and the current sort field, sort direction and
+any `allowed_parameters` are appended to those links.
+
+`simplePaginate()` and cursor pagination results are treated as plain collections — no links
+are rendered for them.
+
+## Testing
+
+The suite runs against a real Laravel application via `orchestra/testbench`, with an
+in-memory SQLite database:
+
+```
+composer test
+```
+
+Tests also fail on any PHP deprecation raised from this package's own code, which is what
+keeps the supported-PHP claim honest.
+
+To run the suite against a PHP version you don't have installed locally, mount the project
+into the official image — the dependency tree is pure PHP, so a `vendor/` built on any
+supported version works:
+
+```
+docker run --rm -v "$PWD":/app -w /app -e LOG_DEPRECATIONS_WHILE_TESTING=true \
+  php:8.5-cli php vendor/bin/phpunit
 ```
